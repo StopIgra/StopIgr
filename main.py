@@ -108,19 +108,9 @@ twitch_miner = TwitchChannelPointsMiner(
 twitch_miner.mine(
     [
        Streamer("thegiftingchannel", settings=StreamerSettings(make_predictions=False  , follow_raid=False , claim_drops=True  , watch_streak=True )),
-	   Streamer("88lootnova", settings=StreamerSettings(make_predictions=False  , follow_raid=False , claim_drops=True  , watch_streak=True )),
        Streamer("staggerrilla", settings=StreamerSettings(make_predictions=False  , follow_raid=False , claim_drops=True  , watch_streak=True ))
     ],                                  # Array of streamers (order = priority)
     followers=False,                    # Automatic download the list of your followers
     followers_order=FollowersOrder.ASC  # Sort the followers list by follow date. ASC or DESC 
 )
 
-# You can customize the settings for each streamer. If not settings were provided, the script would use the streamer_settings from TwitchChannelPointsMiner.
-# If no streamer_settings are provided in TwitchChannelPointsMiner the script will use default settings.
-# The streamers array can be a String -> username or Streamer instance.
-
-# The settings priority are: settings in mine function, settings in TwitchChannelPointsMiner instance, default settings.
-# For example, if in the mine function you don't provide any value for 'make_prediction' but you have set it on TwitchChannelPointsMiner instance, the script will take the value from here.
-# If you haven't set any value even in the instance the default one will be used
-
-#twitch_miner.analytics(host="127.0.0.1", port=5000, refresh=5, days_ago=7)   # Start the Analytics web-server
