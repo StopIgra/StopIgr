@@ -1,43 +1,18 @@
-FROM python:3.12
+# Используем официальный образ Python 3.9 (можно заменить на 3.10 или 3.11, если нужно)
+FROM python:3.9-slim
 
-ARG BUILDX_QEMU_ENV
+# Устанавливаем рабочую директорию — в корень контейнера
+WORKDIR /app
 
-WORKDIR /usr/src/app
+# Копируем requirements.txt и устанавливаем зависимости
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./requirements.txt ./
+# Копируем ВСЕ файлы и папки из репозитория в /app
+COPY . .
 
-ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+# Убедимся, что папки для куков и логов существуют (на случай, если их нет в репо)
+RUN mkdir -p cookies logs
 
-RUN pip install --upgrade pip
-
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -qq -y --fix-missing --no-install-recommends \
-    gcc \
-    libffi-dev \
-    rustc \
-    zlib1g-dev \
-    libjpeg-dev \
-    libssl-dev \
-    libblas-dev \
-    liblapack-dev \
-    make \
-    cmake \    
-    automake \
-    ninja-build \
-    g++ \
-    subversion \
-    python3-dev \
-  && if [ "${BUILDX_QEMU_ENV}" = "true" ] && [ "$(getconf LONG_BIT)" = "32" ]; then \
-        pip install -U cryptography==3.3.2; \
-     fi \
-  && pip install -r requirements.txt \
-  && pip cache purge \
-  && apt-get remove -y gcc rustc \
-  && apt-get autoremove -y \
-  && apt-get autoclean -y \
-  && apt-get clean -y \
-  && rm -rf /var/lib/apt/lists/* \
-  && rm -rf /usr/share/doc/*
-
-ADD ./TwitchChannelPointsMiner ./TwitchChannelPointsMiner
-ENTRYPOINT [ "python", "run.py" ]
+# Запускаем основной скрипт
+CMD ["python", "main.py"]
