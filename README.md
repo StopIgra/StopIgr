@@ -188,17 +188,17 @@ First of all please create a run.py file. You can just copy [example.py](https:/
 
 import logging
 from colorama import Fore
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-from TwitchChannelPointsMiner.logger import LoggerSettings, ColorPalette
-from TwitchChannelPointsMiner.classes.Chat import ChatPresence
-from TwitchChannelPointsMiner.classes.Discord import Discord
-from TwitchChannelPointsMiner.classes.Webhook import Webhook
-from TwitchChannelPointsMiner.classes.Telegram import Telegram
-from TwitchChannelPointsMiner.classes.Settings import Priority, Events, FollowersOrder
-from TwitchChannelPointsMiner.classes.entities.Bet import Strategy, BetSettings, Condition, OutcomeKeys, FilterCondition, DelayMode
-from TwitchChannelPointsMiner.classes.entities.Streamer import Streamer, StreamerSettings
+from Channel import Channel
+from Channel.logger import LoggerSettings, ColorPalette
+from Channel.classes.Chat import ChatPresence
+from Channel.classes.Discord import Discord
+from Channel.classes.Webhook import Webhook
+from Channel.classes.Telegram import Telegram
+from Channel.classes.Settings import Priority, Events, FollowersOrder
+from Channel.classes.entities.Bet import Strategy, BetSettings, Condition, OutcomeKeys, FilterCondition, DelayMode
+from Channel.classes.entities.Streamer import Streamer, StreamerSettings
 
-twitch_miner = TwitchChannelPointsMiner(
+twitch_miner = Channel(
     username="your-twitch-username",
     password="write-your-secure-psw",           # If no password will be provided, the script will ask interactively
     claim_drops_startup=False,                  # If you want to auto claim all drops from Twitch inventory on the startup
@@ -283,12 +283,12 @@ twitch_miner = TwitchChannelPointsMiner(
     )
 )
 
-# You can customize the settings for each streamer. If not settings were provided, the script would use the streamer_settings from TwitchChannelPointsMiner.
-# If no streamer_settings are provided in TwitchChannelPointsMiner the script will use default settings.
+# You can customize the settings for each streamer. If not settings were provided, the script would use the streamer_settings from Channel.
+# If no streamer_settings are provided in Channel the script will use default settings.
 # The streamers array can be a String -> username or Streamer instance.
 
-# The settings priority are: settings in mine function, settings in TwitchChannelPointsMiner instance, default settings.
-# For example, if in the mine function you don't provide any value for 'make_prediction' but you have set it on TwitchChannelPointsMiner instance, the script will take the value from here.
+# The settings priority are: settings in mine function, settings in Channel instance, default settings.
+# For example, if in the mine function you don't provide any value for 'make_prediction' but you have set it on Channel instance, the script will take the value from here.
 # If you haven't set any value even in the instance the default one will be used
 
 #twitch_miner.analytics(host="127.0.0.1", port=5000, refresh=5, days_ago=7)   # Start the Analytics web-server (replit: host="0.0.0.0")
@@ -313,17 +313,17 @@ twitch_miner.mine(
 ```
 You can also use all the default values except for your username obv. Short version:
 ```python
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-from TwitchChannelPointsMiner.classes.Settings import FollowersOrder
-twitch_miner = TwitchChannelPointsMiner("your-twitch-username")
+from Channel import Channel
+from Channel.classes.Settings import FollowersOrder
+twitch_miner = Channel("your-twitch-username")
 twitch_miner.mine(["streamer1", "streamer2"])                                                       # Array of streamers OR
 twitch_miner.mine(followers=True, followers_order=FollowersOrder.ASC)                               # Automatic use the followers list OR
 twitch_miner.mine(["streamer1", "streamer2"], followers=True, followers_order=FollowersOrder.DESC)  # Mixed
 ```
 If you follow so many streamers on Twitch, but you don't want to mine points for all of them, you can blacklist the users with the `blacklist` keyword. [#94](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/94)
 ```python
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-twitch_miner = TwitchChannelPointsMiner("your-twitch-username")
+from Channel import Channel
+twitch_miner = Channel("your-twitch-username")
 twitch_miner.mine(followers=True, blacklist=["user1", "user2"])  # Blacklist example
 ```
 
@@ -661,8 +661,8 @@ If you want you can toggle the dark theme with the dedicated checkbox.
 For use this feature just call the `analytics()` method before start mining. Read more at: [#96](https://github.com/Tkd-Alex/Twitch-Channel-Points-Miner-v2/issues/96)
 The chart will be autofreshed each `refresh` minutes. If you want to connect from one to second machine that have that webpanel you have to use `0.0.0.0` instead of `127.0.0.1`. With the `days_ago` arg you can select how many days you want to show by default in your analytics graph.
 ```python
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-twitch_miner = TwitchChannelPointsMiner("your-twitch-username")
+from Channel import Channel
+twitch_miner = Channel("your-twitch-username")
 twitch_miner.analytics(host="127.0.0.1", port=5000, refresh=5, days_ago=7)   # Analytics web-server
 twitch_miner.mine(followers=True, blacklist=["user1", "user2"])
 ```

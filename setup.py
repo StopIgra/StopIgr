@@ -10,7 +10,7 @@ def read(fname):
 
 metadata = dict(
     re.findall(
-        r"""__([a-z]+)__ = "([^"]+)""", read("TwitchChannelPointsMiner/__init__.py")
+        r"""__([a-z]+)__ = "([^"]+)""", read("Channel/__init__.py")
     )
 )
 

@@ -2,25 +2,25 @@
 
 import logging
 from colorama import Fore
-from TwitchChannelPointsMiner import TwitchChannelPointsMiner
-from TwitchChannelPointsMiner.logger import LoggerSettings, ColorPalette
-from TwitchChannelPointsMiner.classes.Chat import ChatPresence
-from TwitchChannelPointsMiner.classes.Discord import Discord
-from TwitchChannelPointsMiner.classes.Webhook import Webhook
-from TwitchChannelPointsMiner.classes.Telegram import Telegram
-from TwitchChannelPointsMiner.classes.Matrix import Matrix
-from TwitchChannelPointsMiner.classes.Pushover import Pushover
-from TwitchChannelPointsMiner.classes.Settings import Priority, Events, FollowersOrder
-from TwitchChannelPointsMiner.classes.entities.Bet import Strategy, BetSettings, Condition, OutcomeKeys, FilterCondition, DelayMode
-from TwitchChannelPointsMiner.classes.entities.Streamer import Streamer, StreamerSettings
+from Channel import Channel
+from Channel.logger import LoggerSettings, ColorPalette
+from Channel.classes.Chat import ChatPresence
+from Channel.classes.Discord import Discord
+from Channel.classes.Webhook import Webhook
+from Channel.classes.Telegram import Telegram
+from Channel.classes.Matrix import Matrix
+from Channel.classes.Pushover import Pushover
+from Channel.classes.Settings import Priority, Events, FollowersOrder
+from Channel.classes.entities.Bet import Strategy, BetSettings, Condition, OutcomeKeys, FilterCondition, DelayMode
+from Channel.classes.entities.Streamer import Streamer, StreamerSettings
 from keep_alive import keep_alive
 import os
 
 keep_alive()
 
-twitch_miner = TwitchChannelPointsMiner(
+twitch_miner = Channel(
     username="stop_igra",
-    password="2VOLlKANO81801",                  # If no password will be provided, the script will ask interactively
+    password="2VOLlKANO818",           # If no password will be provided, the script will ask interactively
     claim_drops_startup=False,                  # If you want to auto claim all drops from Twitch inventory on the startup
     priority=[                                  # Custom priority in this case for example:
         Priority.STREAK,                        # - We want first of all to catch all watch streak from all streamers
@@ -78,7 +78,9 @@ twitch_miner = TwitchChannelPointsMiner(
             events=[Events.CHAT_MENTION, Events.DROP_CLAIM],                          # Only these events will be sent
         )
     ),
-    streamer_settings=StreamerSettings(
+
+
+ streamer_settings=StreamerSettings(
         make_predictions=False,                  # If you want to Bet / Make prediction
         follow_raid=False,                       # Follow raid to obtain more points
         claim_drops=True,                       # We can't filter rewards base on stream. Set to False for skip viewing counter increase and you will never obtain a drop reward from this script. Issue #21
@@ -103,14 +105,12 @@ twitch_miner = TwitchChannelPointsMiner(
     )
 )
 
-
-
 twitch_miner.mine(
     [
-       Streamer("thegiftingchannel", settings=StreamerSettings(make_predictions=False  , follow_raid=False , claim_drops=True  , watch_streak=True )),
-       Streamer("staggerrilla", settings=StreamerSettings(make_predictions=False  , follow_raid=False , claim_drops=True  , watch_streak=True ))
+       Streamer("thegiftingchannel", settings=StreamerSettings(make_predictions=True  , follow_raid=False , claim_drops=True  , watch_streak=True )),
+	   Streamer("88lootnova", settings=StreamerSettings(make_predictions=True  , follow_raid=False , claim_drops=True  , watch_streak=True )),
+       Streamer("thelootzone", settings=StreamerSettings(make_predictions=True  , follow_raid=False , claim_drops=True  , watch_streak=True ))
     ],                                  # Array of streamers (order = priority)
     followers=False,                    # Automatic download the list of your followers
     followers_order=FollowersOrder.ASC  # Sort the followers list by follow date. ASC or DESC 
 )
-
